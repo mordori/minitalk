@@ -1,0 +1,9 @@
+#.gitignore
+.vscode/
+dep/
+obj/
+*.o
+*.d
+libft.a
+./client
+./server
