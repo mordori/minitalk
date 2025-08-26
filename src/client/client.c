@@ -6,7 +6,7 @@
 /*   By: myli-pen <myli-pen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:07:45 by myli-pen          #+#    #+#             */
-/*   Updated: 2025/08/26 22:19:10 by myli-pen         ###   ########.fr       */
+/*   Updated: 2025/08/26 23:34:12 by myli-pen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ static inline void	ack_handler(int sig)
 	(void)sig;
 	ack = 1;
 }
-
 
 /**
  * @brief Sends the length of a string to a process as 16 bits.
