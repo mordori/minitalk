@@ -6,7 +6,7 @@
 /*   By: myli-pen <myli-pen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:06:53 by myli-pen          #+#    #+#             */
-/*   Updated: 2025/08/26 19:32:12 by myli-pen         ###   ########.fr       */
+/*   Updated: 2025/08/27 00:02:35 by myli-pen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
 # include <sys/types.h>
 
 # include "libft_io.h"
-
-# define PID_MAX 4194304
 
 typedef struct s_message
 {

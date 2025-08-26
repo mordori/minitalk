@@ -6,7 +6,7 @@
 /*   By: myli-pen <myli-pen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:58:22 by myli-pen          #+#    #+#             */
-/*   Updated: 2025/08/26 03:23:03 by myli-pen         ###   ########.fr       */
+/*   Updated: 2025/08/27 00:02:26 by myli-pen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static inline ssize_t	ft_strprint(const char c, va_list *args);
  *
  * @param s Source string.
  * @return Number of bytes written, summed from characters written from `s`
- * and the type conversions. Returns ERROR on error.
+ * and the type conversions. Returns 0 on error.
  */
 ssize_t	ft_printf(const char *s, ...)
 {

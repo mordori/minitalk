@@ -6,7 +6,7 @@
 /*   By: myli-pen <myli-pen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 19:26:01 by myli-pen          #+#    #+#             */
-/*   Updated: 2025/08/26 19:27:10 by myli-pen         ###   ########.fr       */
+/*   Updated: 2025/08/27 00:02:40 by myli-pen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <stdlib.h>
 
 # include "libft_io.h"
+
+# define PID_MAX 4194304
 
 void	ft_error(char *msg);
 
