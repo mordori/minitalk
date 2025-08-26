@@ -6,7 +6,7 @@
 #    By: myli-pen <myli-pen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/25 13:37:28 by myli-pen          #+#    #+#              #
-#    Updated: 2025/08/25 23:22:38 by myli-pen         ###   ########.fr        #
+#    Updated: 2025/08/26 19:31:52 by myli-pen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,14 +40,14 @@ DIR_SRC_CLIENT	=$(DIR_SRC)$(DIR_CLIENT)
 DIR_OBJ_CLIENT	=$(DIR_OBJ)$(DIR_CLIENT)
 
 HEADERS		=$(addprefix -I , \
-				$(DIR_INC_SERVER) $(DIR_INC_CLIENT) $(DIR_INC_LIBFT))
-SRCS_1		=$(addprefix $(DIR_SRC_SERVER), \
-				server.c server_utils.c)
-SRCS_2		=$(addprefix $(DIR_SRC_CLIENT), \
-				client.c client_utils.c)
+				$(DIR_INC) $(DIR_INC_SERVER) $(DIR_INC_CLIENT) $(DIR_INC_LIBFT))
+SRCS_1		=$(addprefix $(DIR_SRC_SERVER), server.c)
+SRCS_2		=$(addprefix $(DIR_SRC_CLIENT), client.c)
+UTILS		=$(addprefix $(DIR_SRC), utils.c)
 OBJS_1		=$(patsubst $(DIR_SRC_SERVER)%.c, $(DIR_OBJ_SERVER)%.o, $(SRCS_1))
 OBJS_2		=$(patsubst $(DIR_SRC_CLIENT)%.c, $(DIR_OBJ_CLIENT)%.o, $(SRCS_2))
-OBJS		=$(OBJS_1) $(OBJS_2)
+OBJS_UTILS	=$(patsubst $(DIR_SRC)%.c, $(DIR_OBJ)%.o, $(UTILS))
+OBJS		=$(OBJS_1) $(OBJS_2) $(OBJS_UTILS)
 DEPS		=$(patsubst $(DIR_OBJ)%.o, $(DIR_DEP)%.d, $(OBJS))
 
 BLUE		=\033[1;34m
@@ -62,12 +62,12 @@ $(LIBFT):
 	@echo "$(GREEN) [+]$(COLOR) compiling libft.a"
 	@make -C $(DIR_LIBFT)
 
-$(NAME_1): $(OBJS_1)
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME_1) $(OBJS_1) $(LIBFT)
+$(NAME_1): $(OBJS_UTILS) $(OBJS_1)
+	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME_1) $(OBJS_1) $(OBJS_UTILS) $(LIBFT)
 	@echo "$(YELLOW) [✔] $(NAME_1) created$(COLOR)"
 
-$(NAME_2): $(OBJS_2)
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME_2) $(OBJS_2) $(LIBFT)
+$(NAME_2): $(OBJS_UTILS) $(OBJS_2)
+	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME_2) $(OBJS_2) $(OBJS_UTILS) $(LIBFT)
 	@echo "$(YELLOW) [✔] $(NAME_2) created$(COLOR)"
 
 $(DIR_OBJ)%.o: $(DIR_SRC)%.c

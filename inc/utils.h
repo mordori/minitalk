@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server_utils.c                                     :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: myli-pen <myli-pen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/25 18:12:27 by myli-pen          #+#    #+#             */
-/*   Updated: 2025/08/26 03:25:13 by myli-pen         ###   ########.fr       */
+/*   Created: 2025/08/26 19:26:01 by myli-pen          #+#    #+#             */
+/*   Updated: 2025/08/26 19:27:10 by myli-pen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#ifndef UTILS_H
+# define UTILS_H
 
-void	server_error(char *msg)
-{
-	ft_putstr_fd("Server error: ", STDERR_FILENO);
-	ft_putendl_fd(msg, STDERR_FILENO);
-	exit(EXIT_FAILURE);
-}
+# include <stdlib.h>
+
+# include "libft_io.h"
+
+void	ft_error(char *msg);
+
+#endif
