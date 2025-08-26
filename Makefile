@@ -6,7 +6,7 @@
 #    By: myli-pen <myli-pen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/25 13:37:28 by myli-pen          #+#    #+#              #
-#    Updated: 2025/08/26 19:31:52 by myli-pen         ###   ########.fr        #
+#    Updated: 2025/08/26 23:03:25 by myli-pen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,6 @@ LIBFT		=$(DIR_LIBFT)libft.a
 
 CC			=cc
 CFLAGS		=-Wall -Wextra -Werror -Wunreachable-code -O3
-LDFLAGS		=
 MAKEFLAGS	+= --no-print-directory
 
 DIR_INC		=inc/
@@ -39,14 +38,14 @@ DIR_INC_CLIENT	=$(DIR_INC)$(DIR_CLIENT)
 DIR_SRC_CLIENT	=$(DIR_SRC)$(DIR_CLIENT)
 DIR_OBJ_CLIENT	=$(DIR_OBJ)$(DIR_CLIENT)
 
-HEADERS		=$(addprefix -I , \
+INCS		=$(addprefix -I , \
 				$(DIR_INC) $(DIR_INC_SERVER) $(DIR_INC_CLIENT) $(DIR_INC_LIBFT))
 SRCS_1		=$(addprefix $(DIR_SRC_SERVER), server.c)
 SRCS_2		=$(addprefix $(DIR_SRC_CLIENT), client.c)
-UTILS		=$(addprefix $(DIR_SRC), utils.c)
+SRCS_UTILS	=$(addprefix $(DIR_SRC), utils.c)
 OBJS_1		=$(patsubst $(DIR_SRC_SERVER)%.c, $(DIR_OBJ_SERVER)%.o, $(SRCS_1))
 OBJS_2		=$(patsubst $(DIR_SRC_CLIENT)%.c, $(DIR_OBJ_CLIENT)%.o, $(SRCS_2))
-OBJS_UTILS	=$(patsubst $(DIR_SRC)%.c, $(DIR_OBJ)%.o, $(UTILS))
+OBJS_UTILS	=$(patsubst $(DIR_SRC)%.c, $(DIR_OBJ)%.o, $(SRCS_UTILS))
 OBJS		=$(OBJS_1) $(OBJS_2) $(OBJS_UTILS)
 DEPS		=$(patsubst $(DIR_OBJ)%.o, $(DIR_DEP)%.d, $(OBJS))
 
@@ -63,16 +62,16 @@ $(LIBFT):
 	@make -C $(DIR_LIBFT)
 
 $(NAME_1): $(OBJS_UTILS) $(OBJS_1)
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME_1) $(OBJS_1) $(OBJS_UTILS) $(LIBFT)
+	@$(CC) $(CFLAGS) -o $(NAME_1) $(OBJS_1) $(OBJS_UTILS) $(LIBFT)
 	@echo "$(YELLOW) [✔] $(NAME_1) created$(COLOR)"
 
 $(NAME_2): $(OBJS_UTILS) $(OBJS_2)
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME_2) $(OBJS_2) $(OBJS_UTILS) $(LIBFT)
+	@$(CC) $(CFLAGS) -o $(NAME_2) $(OBJS_2) $(OBJS_UTILS) $(LIBFT)
 	@echo "$(YELLOW) [✔] $(NAME_2) created$(COLOR)"
 
 $(DIR_OBJ)%.o: $(DIR_SRC)%.c
 	@mkdir -p $(dir $@) $(patsubst $(DIR_OBJ)%, $(DIR_DEP)%, $(dir $@))
-	@$(CC) $(CFLAGS) -c $< -o $@ -MMD -MP -MF $(patsubst $(DIR_OBJ)%.o, $(DIR_DEP)%.d, $@) $(HEADERS)
+	@$(CC) $(CFLAGS) -c $< -o $@ -MMD -MP -MF $(patsubst $(DIR_OBJ)%.o, $(DIR_DEP)%.d, $@) $(INCS)
 	@echo "$(GREEN) [+]$(COLOR) compiling $@"
 
 clean:

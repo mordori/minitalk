@@ -6,7 +6,7 @@
 /*   By: myli-pen <myli-pen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:07:45 by myli-pen          #+#    #+#             */
-/*   Updated: 2025/08/26 19:38:09 by myli-pen         ###   ########.fr       */
+/*   Updated: 2025/08/26 22:19:10 by myli-pen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,20 @@ static inline void	ack_handler(int sig);
 
 static volatile sig_atomic_t	ack = 0;
 
+/**
+ * @brief Client main.
+ *
+ * Validates arguments, sets up the signal handler,
+ * and sends a string to another process via signals.
+ *
+ * - argv[1] = server PID
+ *
+ * - argv[2] = string to send
+ *
+ * @param argc Argument count.
+ * @param argv Argument values.
+ * @return EXIT_SUCCESS when program closes successfully.
+ */
 int	main(int argc, char *argv[])
 {
 	pid_t	pid;
@@ -41,12 +55,26 @@ int	main(int argc, char *argv[])
 	return (EXIT_SUCCESS);
 }
 
+/**
+ * @brief Signal handler for acknowledgment signals.
+ *
+ * Sets the global `ack` flag when a SIGUSR1 is received.
+ *
+ * @param sig Signal number received (unused).
+ */
 static inline void	ack_handler(int sig)
 {
 	(void)sig;
 	ack = 1;
 }
 
+
+/**
+ * @brief Sends the length of a string to a process as 16 bits.
+ *
+ * @param pid PID of the target process.
+ * @param str The string whose length is being sent.
+ */
 static inline void	send_str_len(const pid_t pid, char *str)
 {
 	size_t	len;
@@ -63,6 +91,12 @@ static inline void	send_str_len(const pid_t pid, char *str)
 	}
 }
 
+/**
+ * @brief Sends a string to a process, bit by bit.
+ *
+ * @param pid PID of the target process.
+ * @param str The string to send.
+ */
 static inline void	send_str(const pid_t pid, char *str)
 {
 	int	bit;
@@ -79,6 +113,13 @@ static inline void	send_str(const pid_t pid, char *str)
 	}
 }
 
+/**
+ * @brief Sends a single bit to a process using signals and waits for
+ * acknowledgment.
+ *
+ * @param pid PID of the target process.
+ * @param bit Bit to send (0 or 1).
+ */
 static inline void	send_sig(const pid_t pid, const char bit)
 {
 	int	sig;
