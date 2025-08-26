@@ -1,8 +1,11 @@
 # minitalk
 ## ✨ Features
-Small data exchange program that uses UNIX signals.
+This program sends a string to another process (identified by its PID) using UNIX signals (SIGUSR1 and SIGUSR2). It first sends the length of the string in bits, then sends the actual string, bit by bit. The receiving process acknowledges each bit via a signal handler.
 
-## 📖 Introduction
+- Server-client model
+- ACK handshake
+- Ensures the complete message is received before printing it
+- Supports unicode characters
 
 > [!TIP]
 > ## 🚀 How to use
