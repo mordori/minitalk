@@ -9,7 +9,7 @@ This program sends a string to another process (identified by its PID) using UNI
 
 > [!TIP]
 > ## 🚀 How to use
-Run the following command to clone the repository and create `server` and `client` applications
+Run the following commands to clone the repository and create `server` and `client` applications
 ``` git
 git clone https://github.com/mordori/minitalk.git minitalk
 cd minitalk
