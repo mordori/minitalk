@@ -6,7 +6,7 @@
 /*   By: myli-pen <myli-pen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:58:22 by myli-pen          #+#    #+#             */
-/*   Updated: 2025/08/25 18:37:45 by myli-pen         ###   ########.fr       */
+/*   Updated: 2025/08/26 03:23:03 by myli-pen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 static inline char	*ft_ptrformat(char *s);
 static inline char	*ft_strformat(const char c, va_list *args);
-static inline ssize_t	ft_strprint(const char c, va_list *args, int fd);
+static inline ssize_t	ft_strprint(const char c, va_list *args);
 
 /**
  * Formats and prints string `s` with variable type argument list.
@@ -33,7 +33,7 @@ static inline ssize_t	ft_strprint(const char c, va_list *args, int fd);
  * @return Number of bytes written, summed from characters written from `s`
  * and the type conversions. Returns ERROR on error.
  */
-ssize_t	ft_printf(int fd, const char *s, ...)
+ssize_t	ft_printf(const char *s, ...)
 {
 	va_list	args;
 	ssize_t	totalbytes;
@@ -46,12 +46,12 @@ ssize_t	ft_printf(int fd, const char *s, ...)
 	while (*s)
 	{
 		if (*s++ == '%')
-			bytes = ft_strprint(*s++, &args, fd);
+			bytes = ft_strprint(*s++, &args);
 		else
-			bytes = ft_putchar_fd(*(s - 1), fd);
+			bytes = ft_putchar_fd(*(s - 1), STDOUT_FILENO);
 		if (bytes == ERROR)
 		{
-			totalbytes = ERROR;
+			totalbytes = 0;
 			break ;
 		}
 		totalbytes += bytes;
@@ -123,7 +123,7 @@ static inline char	*ft_strformat(const char c, va_list *args)
  * @param args Variable type argument list.
  * @return Number of bytes written or -1 on error.
  */
-static inline ssize_t	ft_strprint(const char c, va_list *args, int fd)
+static inline ssize_t	ft_strprint(const char c, va_list *args)
 {
 	char	*str;
 	ssize_t	bytes;
@@ -134,9 +134,9 @@ static inline ssize_t	ft_strprint(const char c, va_list *args, int fd)
 	if (!str)
 		return (ERROR);
 	if (c == 'c')
-		bytes = ft_putchar_fd(*str, fd);
+		bytes = ft_putchar_fd(*str, STDOUT_FILENO);
 	else
-		bytes = ft_putstr_fd(str, fd);
+		bytes = ft_putstr_fd(str, STDOUT_FILENO);
 	free(str);
 	return (bytes);
 }

@@ -5,5 +5,3 @@ obj/
 *.o
 *.d
 libft.a
-./client
-./server

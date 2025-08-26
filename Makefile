@@ -6,7 +6,7 @@
 #    By: myli-pen <myli-pen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/25 13:37:28 by myli-pen          #+#    #+#              #
-#    Updated: 2025/08/25 19:10:27 by myli-pen         ###   ########.fr        #
+#    Updated: 2025/08/25 23:22:38 by myli-pen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,27 +20,35 @@ CFLAGS		=-Wall -Wextra -Werror -Wunreachable-code -O3
 LDFLAGS		=
 MAKEFLAGS	+= --no-print-directory
 
-DIR_LIBFT	=$(DIR_LIB)libft/
 DIR_INC		=inc/
 DIR_SRC		=src/
 DIR_LIB		=lib/
 DIR_OBJ		=obj/
 DIR_DEP		=dep/
+DIR_SERVER	=server/
+DIR_CLIENT	=client/
+
+DIR_LIBFT		=$(DIR_LIB)libft/
+DIR_INC_LIBFT	=$(DIR_LIBFT)$(DIR_INC)
+
+DIR_INC_SERVER	=$(DIR_INC)$(DIR_SERVER)
+DIR_SRC_SERVER	=$(DIR_SRC)$(DIR_SERVER)
+DIR_OBJ_SERVER	=$(DIR_OBJ)$(DIR_SERVER)
+
+DIR_INC_CLIENT	=$(DIR_INC)$(DIR_CLIENT)
+DIR_SRC_CLIENT	=$(DIR_SRC)$(DIR_CLIENT)
+DIR_OBJ_CLIENT	=$(DIR_OBJ)$(DIR_CLIENT)
 
 HEADERS		=$(addprefix -I , \
-				$(DIR_INC) $(DIR_LIBFT)$(DIR_INC))
-SRCS_1		=$(addprefix $(DIR_SRC), \
-				server.c)
-SRCS_2		=$(addprefix $(DIR_SRC), \
-				client.c)
-UTILS		=$(addprefix $(DIR_SRC), \
-				utils.c)
-OBJS_1		=$(patsubst $(DIR_SRC)%.c, $(DIR_OBJ)%.o, $(SRCS_1))
-OBJS_2		=$(patsubst $(DIR_SRC)%.c, $(DIR_OBJ)%.o, $(SRCS_2))
-OBJS_UTILS	=$(patsubst $(DIR_SRC)%.c, $(DIR_OBJ)%.o, $(UTILS))
-DEPS		=$(patsubst $(DIR_SRC)%.c, $(DIR_DEP)%.d, $(SRCS_1)) \
-			$(patsubst $(DIR_SRC)%.c, $(DIR_DEP)%.d, $(SRCS_2)) \
-			$(patsubst $(DIR_SRC)%.c, $(DIR_DEP)%.d, $(UTILS))
+				$(DIR_INC_SERVER) $(DIR_INC_CLIENT) $(DIR_INC_LIBFT))
+SRCS_1		=$(addprefix $(DIR_SRC_SERVER), \
+				server.c server_utils.c)
+SRCS_2		=$(addprefix $(DIR_SRC_CLIENT), \
+				client.c client_utils.c)
+OBJS_1		=$(patsubst $(DIR_SRC_SERVER)%.c, $(DIR_OBJ_SERVER)%.o, $(SRCS_1))
+OBJS_2		=$(patsubst $(DIR_SRC_CLIENT)%.c, $(DIR_OBJ_CLIENT)%.o, $(SRCS_2))
+OBJS		=$(OBJS_1) $(OBJS_2)
+DEPS		=$(patsubst $(DIR_OBJ)%.o, $(DIR_DEP)%.d, $(OBJS))
 
 BLUE		=\033[1;34m
 YELLOW		=\033[1;33m
@@ -48,25 +56,22 @@ GREEN		=\033[1;32m
 RED			=\033[1;31m
 COLOR		=\033[0m
 
-all: $(LIBFT) $(OBJS_UTILS) $(NAME_1) $(NAME_2)
-
-$(DIR_OBJ):
-	@mkdir -p $(DIR_LIB) $(DIR_OBJ) $(DIR_DEP)
-	@echo "$(GREEN) [+]$(COLOR) created missing directories"
+all: $(LIBFT) $(NAME_1) $(NAME_2)
 
 $(LIBFT):
 	@echo "$(GREEN) [+]$(COLOR) compiling libft.a"
 	@make -C $(DIR_LIBFT)
 
-$(NAME_1): $(OBJS_1) $(OBJS_UTILS)
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME_1) $(OBJS_1) $(OBJS_UTILS) $(LIBFT)
+$(NAME_1): $(OBJS_1)
+	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME_1) $(OBJS_1) $(LIBFT)
 	@echo "$(YELLOW) [✔] $(NAME_1) created$(COLOR)"
 
-$(NAME_2): $(OBJS_2) $(OBJS_UTILS)
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME_2) $(OBJS_2) $(OBJS_UTILS) $(LIBFT)
+$(NAME_2): $(OBJS_2)
+	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME_2) $(OBJS_2) $(LIBFT)
 	@echo "$(YELLOW) [✔] $(NAME_2) created$(COLOR)"
 
-$(DIR_OBJ)%.o: $(DIR_SRC)%.c | $(DIR_OBJ)
+$(DIR_OBJ)%.o: $(DIR_SRC)%.c
+	@mkdir -p $(dir $@) $(patsubst $(DIR_OBJ)%, $(DIR_DEP)%, $(dir $@))
 	@$(CC) $(CFLAGS) -c $< -o $@ -MMD -MP -MF $(patsubst $(DIR_OBJ)%.o, $(DIR_DEP)%.d, $@) $(HEADERS)
 	@echo "$(GREEN) [+]$(COLOR) compiling $@"
 
