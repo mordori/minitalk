@@ -21,7 +21,7 @@ Start the server with
 ```
 - It will print its process' ID needed as input for the client.
 
-Start the client with the server's PID and a message as arguments
+Start the client with the server's PID and a message as arguments, e.g.
 ``` bash
 ./client 1234 "Hello"
 ```
