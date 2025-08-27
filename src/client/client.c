@@ -6,7 +6,7 @@
 /*   By: myli-pen <myli-pen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:07:45 by myli-pen          #+#    #+#             */
-/*   Updated: 2025/08/27 17:15:33 by myli-pen         ###   ########.fr       */
+/*   Updated: 2025/08/27 20:09:54 by myli-pen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ int	main(int argc, char *argv[])
 	if (end || val < 1 || val > PID_MAX)
 		ft_error("invalid PID");
 	pid = (pid_t)val;
-	if (!argv[2])
-		ft_error("empty string");
 	sa.sa_flags = SA_RESTART;
 	sa.sa_handler = ack_handler;
 	if (sigemptyset(&sa.sa_mask) == ERROR || \
