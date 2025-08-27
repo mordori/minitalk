@@ -6,19 +6,18 @@
 /*   By: myli-pen <myli-pen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:07:45 by myli-pen          #+#    #+#             */
-/*   Updated: 2025/08/26 23:34:12 by myli-pen         ###   ########.fr       */
+/*   Updated: 2025/08/27 17:15:33 by myli-pen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
-#include "utils.h"
 
 static inline void	send_str_len(const pid_t pid, char *str);
 static inline void	send_str(const pid_t pid, char *str);
 static inline void	send_sig(const pid_t pid, const char bit);
 static inline void	ack_handler(int sig);
 
-static volatile sig_atomic_t	ack = 0;
+static volatile sig_atomic_t	g_ack = 0;
 
 /**
  * @brief Client main.
@@ -36,9 +35,10 @@ static volatile sig_atomic_t	ack = 0;
  */
 int	main(int argc, char *argv[])
 {
-	pid_t	pid;
-	int64_t	val;
-	char	end;
+	pid_t				pid;
+	int64_t				val;
+	char				end;
+	struct sigaction	sa;
 
 	if (argc != 3)
 		ft_error("invalid number of args");
@@ -48,8 +48,11 @@ int	main(int argc, char *argv[])
 	pid = (pid_t)val;
 	if (!argv[2])
 		ft_error("empty string");
-	if (signal(SIGUSR1, ack_handler) == SIG_ERR)
-		ft_error("register signal");
+	sa.sa_flags = SA_RESTART;
+	sa.sa_handler = ack_handler;
+	if (sigemptyset(&sa.sa_mask) == ERROR || \
+sigaction(SIGUSR1, &sa, NULL) == ERROR)
+		ft_error("registering sigaction");
 	send_str_len(pid, argv[2]);
 	send_str(pid, argv[2]);
 	return (EXIT_SUCCESS);
@@ -65,7 +68,7 @@ int	main(int argc, char *argv[])
 static inline void	ack_handler(int sig)
 {
 	(void)sig;
-	ack = 1;
+	g_ack = 1;
 }
 
 /**
@@ -122,7 +125,6 @@ static inline void	send_str(const pid_t pid, char *str)
 static inline void	send_sig(const pid_t pid, const char bit)
 {
 	int	sig;
-	int	time;
 
 	sig = 0;
 	if (bit == 0)
@@ -133,13 +135,7 @@ static inline void	send_sig(const pid_t pid, const char bit)
 		ft_error("invalid signal");
 	if (kill(pid, sig))
 		ft_error("signal not transmitted");
-	time = 0;
-	while (!ack)
-	{
-		if (time > TIMEOUT)
-			ft_error("timed out");
-		usleep(SLEEP_TIME);
-		time += SLEEP_TIME;
-	}
-	ack = 0;
+	while (!g_ack)
+		pause();
+	g_ack = 0;
 }

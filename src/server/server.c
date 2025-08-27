@@ -6,12 +6,11 @@
 /*   By: myli-pen <myli-pen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:08:11 by myli-pen          #+#    #+#             */
-/*   Updated: 2025/08/26 22:27:35 by myli-pen         ###   ########.fr       */
+/*   Updated: 2025/08/27 16:59:58 by myli-pen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
-#include "utils.h"
 
 static inline void	sig_handler(int sig, siginfo_t *info, void *ucontext);
 static inline void	init_msg(t_message *msg, const int val);
@@ -29,7 +28,7 @@ int	main(void)
 {
 	struct sigaction	sa;
 
-	sa.sa_flags = SA_SIGINFO;
+	sa.sa_flags = (SA_SIGINFO | SA_RESTART);
 	sa.sa_sigaction = sig_handler;
 	if (sigemptyset(&sa.sa_mask) == ERROR || \
 sigaction(SIGUSR1, &sa, NULL) == ERROR || \

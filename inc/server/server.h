@@ -6,7 +6,7 @@
 /*   By: myli-pen <myli-pen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:06:53 by myli-pen          #+#    #+#             */
-/*   Updated: 2025/08/27 00:02:35 by myli-pen         ###   ########.fr       */
+/*   Updated: 2025/08/27 17:04:21 by myli-pen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define SERVER_H
 
 # define _POSIX_C_SOURCE 200112L
+# define _GNU_SOURCE
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -21,6 +22,8 @@
 # include <sys/types.h>
 
 # include "libft_io.h"
+
+# include "utils.h"
 
 typedef struct s_message
 {
