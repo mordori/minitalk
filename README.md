@@ -1,6 +1,6 @@
 # minitalk
 ## ✨ Features
-**Program that sends a string to another process (identified by its PID) using UNIX signals (SIGUSR1 and SIGUSR2).**
+**Program that sends a string to another process using UNIX signals.**
 
 It first sends the length of the string in bits, then sends the actual string, bit by bit. The receiving process acknowledges each bit via a signal handler.
 - Server-client model
